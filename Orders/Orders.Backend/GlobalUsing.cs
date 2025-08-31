@@ -1,3 +1,8 @@
 ﻿global using Microsoft.EntityFrameworkCore;
 global using Orders.Shared.Entities;
 global using Orders.Backend.Data;
+global using Microsoft.AspNetCore.Mvc;
+global using Orders.Backend.Repositories.Implementations;
+global using Orders.Backend.Repositories.Interfaces;
+global using Orders.Backend.UnitsOfWork.Implementations;
+global using Orders.Backend.UnitsOfWork.Interfaces;
