@@ -1,7 +1,13 @@
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+{
+    // Evitar ciclos en las referencias circulares. Entities relacionadas o dtos con referencias circulares
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 builder.Services.AddOpenApi();
 
 // Agregar Swagger/OpenAPI
@@ -16,8 +22,14 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddTransient<SeedDb>();
 
 // Inyección de los repositorios
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
+builder.Services.AddScoped(typeof(IGenericRepository<>) , typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IGenericUnitOfWork<>) , typeof(GenericUnitOfWork<>));
+
+builder.Services.AddScoped<ICountriesRepository         , CountriesRepository>  ();
+builder.Services.AddScoped<IStatesRepository            , StatesRepository>     ();
+
+builder.Services.AddScoped<ICountriesUnitOfWork         , CountriesUnitOfWork>  ();
+builder.Services.AddScoped<IStatesUnitOfWork            , StatesUnitOfWork>     ();
 
 var app = builder.Build();
 

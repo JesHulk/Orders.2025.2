@@ -6,3 +6,4 @@ global using Orders.Backend.Repositories.Implementations;
 global using Orders.Backend.Repositories.Interfaces;
 global using Orders.Backend.UnitsOfWork.Implementations;
 global using Orders.Backend.UnitsOfWork.Interfaces;
+global using Orders.Shared.Responses;
