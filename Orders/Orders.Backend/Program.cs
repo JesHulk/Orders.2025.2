@@ -21,13 +21,17 @@ builder.Services.AddDbContext<DataContext>(options =>
 // Inyección del servicio para poblar la base de datos
 builder.Services.AddTransient<SeedDb>();
 
-// Inyección de los repositorios
+// Inyección de los repositorios y unidades de trabajo geneéricos
 builder.Services.AddScoped(typeof(IGenericRepository<>) , typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>) , typeof(GenericUnitOfWork<>));
 
+// Inyección de los repositorios específicos
+builder.Services.AddScoped<ICitiesRepository            , CitiesRepository>     ();
 builder.Services.AddScoped<ICountriesRepository         , CountriesRepository>  ();
 builder.Services.AddScoped<IStatesRepository            , StatesRepository>     ();
 
+// Inyección de las unidades de trabajo específicas
+builder.Services.AddScoped<ICitiesUnitOfWork            , CitiesUnitOfWork>     ();
 builder.Services.AddScoped<ICountriesUnitOfWork         , CountriesUnitOfWork>  ();
 builder.Services.AddScoped<IStatesUnitOfWork            , StatesUnitOfWork>     ();
 

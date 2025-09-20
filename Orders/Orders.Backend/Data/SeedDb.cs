@@ -1,5 +1,4 @@
-﻿
-namespace Orders.Backend.Data;
+﻿namespace Orders.Backend.Data;
 
 public class SeedDb(DataContext context)
 {
@@ -10,10 +9,21 @@ public class SeedDb(DataContext context)
         // Create the database if it does not exist
         await _context.Database.EnsureCreatedAsync();
 
+        await CheckCountriesFullAsync();
+        
         await CheckCountriesAsync();
 
         await CheckCategoriesAsync();
 
+    }
+
+    private async Task CheckCountriesFullAsync()
+    {
+        if (!_context.Countries.Any())
+        {
+            var countriesSQLScript = await File.ReadAllTextAsync("Data\\CountriesStatesCities.sql");
+            await _context.Database.ExecuteSqlRawAsync(countriesSQLScript);
+        }
     }
 
     private async Task CheckCategoriesAsync()

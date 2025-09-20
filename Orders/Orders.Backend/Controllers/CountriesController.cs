@@ -7,6 +7,19 @@ public class CountriesController(IGenericUnitOfWork<Country> unitOfWork,
 {
     private readonly ICountriesUnitOfWork _countriesUnitOfWork = countriesUnitOfWork;
 
+    #region GET
+
+    [HttpGet("paginated")]
+    public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+    {
+        var response = await _countriesUnitOfWork.GetAsync(pagination);
+        if (response.WasIsSuccess)
+        {
+            return Ok(response.Result);
+        }
+        return BadRequest(response.Message);
+    }
+
     [HttpGet]
     public override async Task<IActionResult> GetAsync()
     {
@@ -28,4 +41,7 @@ public class CountriesController(IGenericUnitOfWork<Country> unitOfWork,
         }
         return NotFound();
     }
+
+    #endregion
+
 }

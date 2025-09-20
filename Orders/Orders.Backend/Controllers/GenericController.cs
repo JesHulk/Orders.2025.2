@@ -1,6 +1,4 @@
-﻿using Orders.Backend.UnitsOfWork.Interfaces;
-
-namespace Orders.Backend.Controllers;
+﻿namespace Orders.Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -30,6 +28,29 @@ public class GenericController<T>(IGenericUnitOfWork<T> unitOfWork) : Controller
         }
         return NotFound();
     }
+
+    [HttpGet("paginated")]
+    public virtual async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+    {
+        var action = await _unitOfWork.GetAsync(pagination);
+        if (action.WasIsSuccess)
+        {
+            return Ok(action.Result);
+        }
+        return BadRequest(action.Message);
+    }
+
+    [HttpGet("totalRecords")]
+    public virtual async Task<IActionResult> GetTotalRecordsAsync([FromQuery] PaginationDTO pagination)
+    {
+        var action = await _unitOfWork.GetTotalRecordsAsync(pagination);
+        if (action.WasIsSuccess)
+        {
+            return Ok(action.Result);
+        }
+        return BadRequest(action.Message);
+    }
+
     #endregion
 
     #region POST

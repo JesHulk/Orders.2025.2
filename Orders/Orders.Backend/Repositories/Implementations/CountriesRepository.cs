@@ -4,6 +4,21 @@ public class CountriesRepository(DataContext context) : GenericRepository<Countr
 {
     private readonly DataContext _context = context;
 
+    public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.Countries
+            .Include(x => x.States)
+            .AsQueryable();
+
+        return new ActionResponse<IEnumerable<Country>>
+        {
+            WasIsSuccess    = true,
+            Result          = await queryable.OrderBy    (x => x.Name)
+                                             .Paginate   (pagination)
+                                             .ToListAsync()
+        };
+    }
+
     public async override Task<ActionResponse<IEnumerable<Country>>> GetAsync()
     {
         var countries = await _context.Countries

@@ -4,6 +4,37 @@ public class StatesRepository(DataContext context) : GenericRepository<State>(co
 {
     private readonly DataContext _context = context;
 
+    public override async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.States
+            .Where(x => x.Country!.Id == pagination.Id)
+            .AsQueryable();
+
+        double count = await queryable.CountAsync();
+        return new ActionResponse<int>
+        {
+            WasIsSuccess = true,
+            Result = (int)count
+        };
+    }
+
+    public override async Task<ActionResponse<IEnumerable<State>>> GetAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.States
+            .Include(s => s.Cities)
+            .Where(x => x.Country!.Id == pagination.Id)
+            .AsQueryable();
+
+        return new ActionResponse<IEnumerable<State>>
+        {
+            WasIsSuccess = true,
+            Result = await queryable
+               .OrderBy(x => x.Name)
+               .Paginate(pagination)
+               .ToListAsync()
+        };
+    }
+
     public override async Task<ActionResponse<IEnumerable<State>>> GetAsync()
     {
         var response = new ActionResponse<IEnumerable<State>>();

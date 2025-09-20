@@ -7,6 +7,30 @@ public class StatesController(IGenericUnitOfWork<State> unitOfWork,
 {
     private readonly IStatesUnitOfWork _statesUnitOfWork = statesUnitOfWork;
 
+    #region GET
+
+    [HttpGet("totalRecords")]
+    public override async Task<IActionResult> GetTotalRecordsAsync([FromQuery] PaginationDTO pagination)
+    {
+        var response = await _statesUnitOfWork.GetTotalRecordsAsync(pagination);
+        if (response.WasIsSuccess)
+        {
+            return Ok(response.Result);
+        }
+        return BadRequest(response.Message);
+    }
+
+    [HttpGet("paginated")]
+    public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+    {
+        var response = await _statesUnitOfWork.GetAsync(pagination);
+        if (response.WasIsSuccess)
+        {
+            return Ok(response.Result);
+        }
+        return BadRequest(response.Message);
+    }
+
     [HttpGet]
     public override async Task<IActionResult> GetAsync()
     {
@@ -29,5 +53,6 @@ public class StatesController(IGenericUnitOfWork<State> unitOfWork,
         return NotFound(response.Message);
     }
 
+    #endregion
 
 }

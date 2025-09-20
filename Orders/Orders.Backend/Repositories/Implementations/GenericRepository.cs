@@ -1,7 +1,4 @@
-﻿using Orders.Backend.Repositories.Interfaces;
-using Orders.Shared.Responses;
-
-namespace Orders.Backend.Repositories.Implementations;
+﻿namespace Orders.Backend.Repositories.Implementations;
 
 public class GenericRepository<T>(DataContext context) : IGenericRepository<T> where T : class
 {
@@ -83,7 +80,30 @@ public class GenericRepository<T>(DataContext context) : IGenericRepository<T> w
             WasIsSuccess = true,
             Result = await _entity.ToListAsync()
         };
-    
+
+    public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync(PaginationDTO pagination)
+    {
+        var queryable = _entity.AsQueryable();
+
+        return new ActionResponse<IEnumerable<T>>
+        {
+            WasIsSuccess = true,
+            Result = await queryable
+                .Paginate(pagination)
+                .ToListAsync()
+        };
+    }
+
+    public virtual async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination)
+    {
+        var queryable = _entity.AsQueryable();
+        double count = await queryable.CountAsync();
+        return new ActionResponse<int>
+        {
+            WasIsSuccess = true,
+            Result = (int)count
+        };
+    }
 
     public virtual async Task<ActionResponse<T>> UpdateAsync(T entity)
     {
