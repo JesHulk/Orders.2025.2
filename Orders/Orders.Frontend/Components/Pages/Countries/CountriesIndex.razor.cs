@@ -9,8 +9,9 @@ public partial class CountriesIndex
     private List<Country>? Countries { get; set; } = [];
 
     protected override async Task OnInitializedAsync()
-    {
+    {        
         var httpResult = await Repository.GetAsync<List<Country>>("api/countries");
+        Thread.Sleep(3000);
         Countries = httpResult.Response;        
     }
 }
