@@ -6,3 +6,4 @@ global using Orders.Frontend.Repositories;
 global using Microsoft.AspNetCore.Components;
 global using Orders.Shared.Entities;
 global using MudBlazor;
+global using Microsoft.AspNetCore.Components.Forms;

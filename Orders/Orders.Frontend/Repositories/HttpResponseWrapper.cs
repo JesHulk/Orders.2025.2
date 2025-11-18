@@ -11,7 +11,7 @@ public class HttpResponseWrapper<T>(T? response, bool error, HttpResponseMessage
     public HttpResponseMessage HttpResponseMessage { get; set; } = httpResponseMessage;
 
 
-    public async Task<string> GetErrorMessage()
+    public async Task<string> GetErrorMessageAsync()
     {
         if (!Error)
         {
