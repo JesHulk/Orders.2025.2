@@ -11,7 +11,7 @@ public class CitiesController(IGenericUnitOfWork<City> unitOfWork, ICitiesUnitOf
     public override async Task<IActionResult> GetTotalRecordsAsync([FromQuery] PaginationDTO pagination)
     {
         var response = await _citiesUnitOfWork.GetTotalRecordsAsync(pagination);
-        if (response.WasIsSuccess)
+        if (response.WasSuccess)
         {
             return Ok(response.Result);
         }
@@ -22,7 +22,7 @@ public class CitiesController(IGenericUnitOfWork<City> unitOfWork, ICitiesUnitOf
     public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
     {
         var response = await _citiesUnitOfWork.GetAsync(pagination);
-        if (response.WasIsSuccess)
+        if (response.WasSuccess)
         {
             return Ok(response.Result);
         }

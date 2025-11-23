@@ -13,7 +13,7 @@ public class StatesController(IGenericUnitOfWork<State> unitOfWork,
     public override async Task<IActionResult> GetTotalRecordsAsync([FromQuery] PaginationDTO pagination)
     {
         var response = await _statesUnitOfWork.GetTotalRecordsAsync(pagination);
-        if (response.WasIsSuccess)
+        if (response.WasSuccess)
         {
             return Ok(response.Result);
         }
@@ -24,7 +24,7 @@ public class StatesController(IGenericUnitOfWork<State> unitOfWork,
     public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
     {
         var response = await _statesUnitOfWork.GetAsync(pagination);
-        if (response.WasIsSuccess)
+        if (response.WasSuccess)
         {
             return Ok(response.Result);
         }
@@ -35,7 +35,7 @@ public class StatesController(IGenericUnitOfWork<State> unitOfWork,
     public override async Task<IActionResult> GetAsync()
     {
         var repsonse = await _statesUnitOfWork.GetAsync();
-        if (repsonse.WasIsSuccess)
+        if (repsonse.WasSuccess)
         {
             return Ok(repsonse.Result);
         }
@@ -46,7 +46,7 @@ public class StatesController(IGenericUnitOfWork<State> unitOfWork,
     public override async Task<IActionResult> GetAsync(int id)
     {
         var response = await _statesUnitOfWork.GetAsync(id);
-        if (response.WasIsSuccess)
+        if (response.WasSuccess)
         {
             return Ok(response.Result);
         }

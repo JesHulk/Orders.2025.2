@@ -11,7 +11,7 @@ public class GenericController<T>(IGenericUnitOfWork<T> unitOfWork) : Controller
     public virtual async Task<IActionResult> GetAsync()
     {
         var action = await _unitOfWork.GetAsync();
-        if (action.WasIsSuccess)
+        if (action.WasSuccess)
         {
             return Ok(action.Result);
         }
@@ -22,7 +22,7 @@ public class GenericController<T>(IGenericUnitOfWork<T> unitOfWork) : Controller
     public virtual async Task<IActionResult> GetAsync(int id)
     {
         var action = await _unitOfWork.GetAsync(id);
-        if (action.WasIsSuccess)
+        if (action.WasSuccess)
         {
             return Ok(action.Result);
         }
@@ -33,7 +33,7 @@ public class GenericController<T>(IGenericUnitOfWork<T> unitOfWork) : Controller
     public virtual async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
     {
         var action = await _unitOfWork.GetAsync(pagination);
-        if (action.WasIsSuccess)
+        if (action.WasSuccess)
         {
             return Ok(action.Result);
         }
@@ -44,7 +44,7 @@ public class GenericController<T>(IGenericUnitOfWork<T> unitOfWork) : Controller
     public virtual async Task<IActionResult> GetTotalRecordsAsync([FromQuery] PaginationDTO pagination)
     {
         var action = await _unitOfWork.GetTotalRecordsAsync(pagination);
-        if (action.WasIsSuccess)
+        if (action.WasSuccess)
         {
             return Ok(action.Result);
         }
@@ -58,7 +58,7 @@ public class GenericController<T>(IGenericUnitOfWork<T> unitOfWork) : Controller
     public virtual async Task<IActionResult> PostAsync(T model)
     {
         var action = await _unitOfWork.AddAsync(model);
-        if (action.WasIsSuccess)
+        if (action.WasSuccess)
         {
             return Ok(action.Result);
         }
@@ -71,7 +71,7 @@ public class GenericController<T>(IGenericUnitOfWork<T> unitOfWork) : Controller
     public virtual async Task<IActionResult> PutAsync(T model)
     {
         var action = await _unitOfWork.UpdateAsync(model);
-        if (action.WasIsSuccess)
+        if (action.WasSuccess)
         {
             return Ok(action.Result);
         }
@@ -84,7 +84,7 @@ public class GenericController<T>(IGenericUnitOfWork<T> unitOfWork) : Controller
     public virtual async Task<IActionResult> DeleteAsync(int id)
     {
         var action = await _unitOfWork.DeleteAsync(id);
-        if (action.WasIsSuccess)
+        if (action.WasSuccess)
         {
             return NoContent();
         }

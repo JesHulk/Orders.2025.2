@@ -4,20 +4,6 @@ public class StatesRepository(DataContext context) : GenericRepository<State>(co
 {
     private readonly DataContext _context = context;
 
-    public override async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination)
-    {
-        var queryable = _context.States
-            .Where(x => x.Country!.Id == pagination.Id)
-            .AsQueryable();
-
-        double count = await queryable.CountAsync();
-        return new ActionResponse<int>
-        {
-            WasIsSuccess = true,
-            Result = (int)count
-        };
-    }
-
     public override async Task<ActionResponse<IEnumerable<State>>> GetAsync(PaginationDTO pagination)
     {
         var queryable = _context.States
@@ -25,13 +11,37 @@ public class StatesRepository(DataContext context) : GenericRepository<State>(co
             .Where(x => x.Country!.Id == pagination.Id)
             .AsQueryable();
 
+        if (!string.IsNullOrEmpty(pagination.Filter))
+        {
+            queryable = queryable.Where(x => x.Name.Contains(pagination.Filter, StringComparison.CurrentCultureIgnoreCase));
+        }
+
         return new ActionResponse<IEnumerable<State>>
         {
-            WasIsSuccess = true,
+            WasSuccess = true,
             Result = await queryable
                .OrderBy(x => x.Name)
                .Paginate(pagination)
                .ToListAsync()
+        };
+    }
+
+    public override async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.States
+            .Where(x => x.Country!.Id == pagination.Id)
+            .AsQueryable();
+
+        if (!string.IsNullOrEmpty(pagination.Filter))
+        {
+            queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+        }
+
+        double count = await queryable.CountAsync();
+        return new ActionResponse<int>
+        {
+            WasSuccess = true,
+            Result = (int)count
         };
     }
 
@@ -45,7 +55,7 @@ public class StatesRepository(DataContext context) : GenericRepository<State>(co
                 .ToListAsync();
 
             response.Result = states;
-            response.WasIsSuccess = true;
+            response.WasSuccess = true;
         }
         catch (Exception ex)
         {
@@ -66,7 +76,7 @@ public class StatesRepository(DataContext context) : GenericRepository<State>(co
             if (state != null)
             {
                 response.Result = state;
-                response.WasIsSuccess = true;
+                response.WasSuccess = true;
             }
             else
             {

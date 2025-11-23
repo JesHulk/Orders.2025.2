@@ -6,16 +6,21 @@ public class CountriesRepository(DataContext context) : GenericRepository<Countr
 
     public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync(PaginationDTO pagination)
     {
-        var queryable = _context.Countries
+        var queryable = _context.Countries  
             .Include(x => x.States)
             .AsQueryable();
 
-        return new ActionResponse<IEnumerable<Country>>
+        if (!string.IsNullOrEmpty(pagination.Filter))
         {
-            WasIsSuccess    = true,
-            Result          = await queryable.OrderBy    (x => x.Name)
-                                             .Paginate   (pagination)
-                                             .ToListAsync()
+            queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+        }
+
+        return new ActionResponse<IEnumerable<Country>> 
+        {
+            WasSuccess = true,
+            Result     = await queryable.OrderBy    (x => x.Name)
+                                        .Paginate   (pagination)
+                                        .ToListAsync()
         };
     }
 
@@ -25,10 +30,11 @@ public class CountriesRepository(DataContext context) : GenericRepository<Countr
             .Include(x => x.States)
             .ToListAsync();
 
+
         return new ActionResponse<IEnumerable<Country>>
         {
-            WasIsSuccess = true,
-            Result = countries
+            WasSuccess = true,
+            Result     = countries
         };
     }
 
@@ -49,8 +55,25 @@ public class CountriesRepository(DataContext context) : GenericRepository<Countr
 
         return new ActionResponse<Country>
         {
-            WasIsSuccess = true,
+            WasSuccess = true,
             Result = country
+        };
+    }
+
+    public override async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.Countries.AsQueryable();
+
+        if (!string.IsNullOrEmpty(pagination.Filter))
+        {
+            queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
+        }
+
+        double count = await queryable.CountAsync();
+        return new ActionResponse<int>
+        {
+            WasSuccess = true,
+            Result = (int)count
         };
     }
 }

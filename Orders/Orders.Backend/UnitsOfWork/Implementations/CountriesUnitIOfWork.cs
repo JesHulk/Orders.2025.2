@@ -5,6 +5,9 @@ public class CountriesUnitOfWork(IGenericRepository<Country> repository,
     : GenericUnitOfWork<Country>(repository), ICountriesUnitOfWork
 {    
 
+    public override async Task<ActionResponse<int>> GetTotalRecordsAsync(PaginationDTO pagination) 
+        => await _countriesRepository.GetTotalRecordsAsync(pagination);
+
     private readonly ICountriesRepository _countriesRepository = countriesRepository;
 
     public async override Task<ActionResponse<IEnumerable<Country>>> GetAsync(PaginationDTO pagination) 

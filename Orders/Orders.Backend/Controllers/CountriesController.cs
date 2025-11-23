@@ -9,11 +9,23 @@ public class CountriesController(IGenericUnitOfWork<Country> unitOfWork,
 
     #region GET
 
+    [HttpGet("totalRecords")]
+    public override async Task<IActionResult> GetTotalRecordsAsync([FromQuery] PaginationDTO pagination)
+    {
+        var action = await _countriesUnitOfWork.GetTotalRecordsAsync(pagination);
+        if (action.WasSuccess)
+        {
+            return Ok(action.Result);
+        }
+        return BadRequest();
+    }
+
+
     [HttpGet("paginated")]
     public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
     {
         var response = await _countriesUnitOfWork.GetAsync(pagination);
-        if (response.WasIsSuccess)
+        if (response.WasSuccess)
         {
             return Ok(response.Result);
         }
@@ -24,7 +36,7 @@ public class CountriesController(IGenericUnitOfWork<Country> unitOfWork,
     public override async Task<IActionResult> GetAsync()
     {
         var action = await _countriesUnitOfWork.GetAsync();
-        if (action.WasIsSuccess)
+        if (action.WasSuccess)
         {
             return Ok(action.Result);
         }
@@ -35,7 +47,7 @@ public class CountriesController(IGenericUnitOfWork<Country> unitOfWork,
     public override async Task<IActionResult> GetAsync(int id)
     {
         var action = await _countriesUnitOfWork.GetAsync(id);
-        if (action.WasIsSuccess)
+        if (action.WasSuccess)
         {
             return Ok(action.Result);
         }

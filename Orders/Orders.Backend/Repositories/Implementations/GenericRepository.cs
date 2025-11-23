@@ -13,7 +13,7 @@ public class GenericRepository<T>(DataContext context) : IGenericRepository<T> w
             await _context.SaveChangesAsync();
             return new ActionResponse<T>
             {
-                WasIsSuccess = true,
+                WasSuccess = true,
                 Result = entity
             };
         }
@@ -44,7 +44,7 @@ public class GenericRepository<T>(DataContext context) : IGenericRepository<T> w
             await _context.SaveChangesAsync();
             return new ActionResponse<T>
             {
-                WasIsSuccess = true
+                WasSuccess = true
             };
         }
         catch
@@ -69,7 +69,7 @@ public class GenericRepository<T>(DataContext context) : IGenericRepository<T> w
         }
         return new ActionResponse<T>
         {
-            WasIsSuccess = true,
+            WasSuccess = true,
             Result = row
         };
     }
@@ -77,7 +77,7 @@ public class GenericRepository<T>(DataContext context) : IGenericRepository<T> w
     public virtual async Task<ActionResponse<IEnumerable<T>>> GetAsync()   
         => new ActionResponse<IEnumerable<T>>
         {
-            WasIsSuccess = true,
+            WasSuccess = true,
             Result = await _entity.ToListAsync()
         };
 
@@ -87,7 +87,7 @@ public class GenericRepository<T>(DataContext context) : IGenericRepository<T> w
 
         return new ActionResponse<IEnumerable<T>>
         {
-            WasIsSuccess = true,
+            WasSuccess = true,
             Result = await queryable
                 .Paginate(pagination)
                 .ToListAsync()
@@ -100,7 +100,7 @@ public class GenericRepository<T>(DataContext context) : IGenericRepository<T> w
         double count = await queryable.CountAsync();
         return new ActionResponse<int>
         {
-            WasIsSuccess = true,
+            WasSuccess = true,
             Result = (int)count
         };
     }
@@ -113,7 +113,7 @@ public class GenericRepository<T>(DataContext context) : IGenericRepository<T> w
             await _context.SaveChangesAsync();
             return new ActionResponse<T>
             {
-                WasIsSuccess = true,
+                WasSuccess = true,
                 Result = entity
             };
         }

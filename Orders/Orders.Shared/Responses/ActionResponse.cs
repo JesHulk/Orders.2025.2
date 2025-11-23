@@ -2,7 +2,7 @@
 
 public class ActionResponse<T>
 {
-    public bool WasIsSuccess { get; set; }
+    public bool WasSuccess { get; set; }
 
     public string? Message { get; set; }
 

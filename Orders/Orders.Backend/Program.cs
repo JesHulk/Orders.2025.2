@@ -26,11 +26,13 @@ builder.Services.AddScoped(typeof(IGenericRepository<>) , typeof(GenericReposito
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>) , typeof(GenericUnitOfWork<>));
 
 // Inyección de los repositorios específicos
+builder.Services.AddScoped<ICategoriesRepository        , CategoriesRepository> ();
 builder.Services.AddScoped<ICitiesRepository            , CitiesRepository>     ();
 builder.Services.AddScoped<ICountriesRepository         , CountriesRepository>  ();
 builder.Services.AddScoped<IStatesRepository            , StatesRepository>     ();
 
 // Inyección de las unidades de trabajo específicas
+builder.Services.AddScoped<ICategoriesUnitOfWork        , CategoriesUnitOfWork> ();
 builder.Services.AddScoped<ICitiesUnitOfWork            , CitiesUnitOfWork>     ();
 builder.Services.AddScoped<ICountriesUnitOfWork         , CountriesUnitOfWork>  ();
 builder.Services.AddScoped<IStatesUnitOfWork            , StatesUnitOfWork>     ();
